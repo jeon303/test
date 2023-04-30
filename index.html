@@ -30,13 +30,21 @@
 			const token1Amount = parseFloat(document.getElementById("token1Amount").value);
 			const token2Amount = parseFloat(document.getElementById("token2Amount").value);
 
-			const priceRatio = token1Price / token2Price;
-			const balanceRatio = token1Amount / token2Amount;
+			const tickSpacing = 60;
+			const lowerTick = Math.floor(Math.log(token1Price / token2Price) / Math.log(1.0001) / tickSpacing) * tickSpacing;
+			const upperTick = lowerTick + tickSpacing;
 
-			const impermanentLoss = 1 - Math.sqrt(priceRatio * balanceRatio);
+			const sqrtPrice = Math.sqrt(token1Price / token2Price);
+			const liquidity = Math.sqrt(token1Amount * token2Amount);
+
+			const tickRange = upperTick - lowerTick;
+			const priceRange = sqrtPrice ** 2 - (1 / sqrtPrice) ** 2;
+
+			const impermanentLoss = (4 * (tickRange ** 2)) / (priceRange * liquidity * 10000 + 4 * (tickRange ** 2));
 
 			document.getElementById("result").innerHTML = "Impermanent Loss: " + (impermanentLoss * 100).toFixed(2) + "%";
 		}
 	</script>
 </body>
 </html>
+
