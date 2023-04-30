@@ -1,6 +1,3 @@
-Sure! Here's an updated CSS code that uses a modern design style for the table:
-
-```css
 body {
   background-color: #f2f2f2;
 }
@@ -17,14 +14,14 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 th,
 td {
-  padding: 16px;
+  padding: 20px;
   text-align: left;
 }
 
@@ -34,8 +31,8 @@ th {
   color: #ffffff;
   background-color: #121212;
   text-transform: uppercase;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 td {
@@ -62,6 +59,19 @@ td:nth-child(6) {
 .red {
   color: #f44336;
 }
-```
 
-This CSS code uses a white background for the table, and adds border-radius and box-shadow to create a card-like effect. The font sizes and weights are adjusted to make the text more legible, and the background color for the table headers is changed to a darker shade of gray to create contrast with the white background. The green and red colors for the 24h change are updated to a brighter shade of green and red.
+@media screen and (max-width: 600px) {
+  #cryptocurrencies-container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  table {
+    border-radius: 10px;
+  }
+
+  th,
+  td {
+    padding: 15px;
+  }
+}
