@@ -43,18 +43,17 @@
       const tickLowerRatio = tickLower / initialPriceRatio;
       const tickUpperRatio = tickUpper / initialPriceRatio;
 
-      if (priceChangeRatio >= tickLowerRatio && priceChangeRatio <= tickUpperRatio) {
+      let effectivePriceChangeRatio;
+
+      if (priceChangeRatio < tickLowerRatio) {
+        effectivePriceChangeRatio = tickLowerRatio;
+      } else if (priceChangeRatio > tickUpperRatio) {
+        effectivePriceChangeRatio = tickUpperRatio;
+      } else {
         return 0; // No impermanent loss
       }
 
-      let outsidePriceRatio;
-      if (priceChangeRatio < tickLowerRatio) {
-        outsidePriceRatio = tickLowerRatio;
-      } else {
-        outsidePriceRatio = tickUpperRatio;
-      }
-
-      const impermanentLoss = 1 - (priceChangeRatio / outsidePriceRatio);
+      const impermanentLoss = 1 - (priceChangeRatio / effectivePriceChangeRatio);
       return impermanentLoss;
     }
 
@@ -69,47 +68,3 @@
       const currentPriceA = parseFloat(document.getElementById("currentPriceA").value);
       const currentPriceB = parseFloat(document.getElementById("currentPriceB").value);
       const tickLower = parseFloat(document.getElementById("tickLower").value);
-      const tickUpper = parseFloat(document.getElementById("tickUpper").value);
-
-      const impermanent
-
-  </div>
-  <script>
-    function calculateImpermanentLoss(initialPriceA, initialPriceB, currentPriceA, currentPriceB, tickLower, tickUpper) {
-      const initialPriceRatio = initialPriceA / initialPriceB;
-      const currentPriceRatio = currentPriceA / currentPriceB;
-
-      const priceChangeRatio = currentPriceRatio / initialPriceRatio;
-      const tickLowerRatio = tickLower / initialPriceRatio;
-      const tickUpperRatio = tickUpper / initialPriceRatio;
-
-      if (priceChangeRatio >= tickLowerRatio && priceChangeRatio <= tickUpperRatio) {
-        return 0; // No impermanent loss
-      }
-
-      let outsidePriceRatio;
-      if (priceChangeRatio < tickLowerRatio) {
-        outsidePriceRatio = tickLowerRatio;
-      } else {
-        outsidePriceRatio = tickUpperRatio;
-      }
-
-      const impermanentLoss = 1 - (priceChangeRatio / outsidePriceRatio);
-      return impermanentLoss;
-    }
-
-    const calculatorForm = document.getElementById("calculator");
-    const resultDiv = document.getElementById("result");
-
-    calculatorForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const initialPriceA = parseFloat(document.getElementById("initialPriceA").value);
-      const initialPriceB = parseFloat(document.getElementById("initialPriceB").value);
-      const currentPriceA = parseFloat(document.getElementById("currentPriceA").value);
-      const currentPriceB = parseFloat(document.getElementById("currentPriceB").value);
-      const tickLower = parseFloat(document.getElementById("tickLower").value);
-      const tickUpper = parseFloat(document.getElementById("tickUpper").value);
-
-      const impermanentLoss = calculateImpermanentLoss(initialPriceA, initialPriceB, currentPriceA, currentPriceB, tick
-
