@@ -1,51 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Uniswap v3 Impermanent Loss Calculator</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uniswap V3 Impermanent Loss Calculator</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
 </head>
 <body>
-	<h1>Uniswap v3 Impermanent Loss Calculator</h1>
-	<form>
-		<label for="token1Price">Token 1 Price:</label>
-		<input type="number" id="token1Price" name="token1Price" step="0.0001" min="0.0001" required>
-		<br>
-		<label for="token2Price">Token 2 Price:</label>
-		<input type="number" id="token2Price" name="token2Price" step="0.0001" min="0.0001" required>
-		<br>
-		<label for="token1Amount">Token 1 Amount:</label>
-		<input type="number" id="token1Amount" name="token1Amount" step="0.0001" min="0.0001" required>
-		<br>
-		<label for="token2Amount">Token 2 Amount:</label>
-		<input type="number" id="token2Amount" name="token2Amount" step="0.0001" min="0.0001" required>
-		<br>
-		<button type="button" onclick="calculateImpermanentLoss()">Calculate</button>
-	</form>
-	<p id="result"></p>
-	<script>
-		function calculateImpermanentLoss() {
-			const token1Price = parseFloat(document.getElementById("token1Price").value);
-			const token2Price = parseFloat(document.getElementById("token2Price").value);
-			const token1Amount = parseFloat(document.getElementById("token1Amount").value);
-			const token2Amount = parseFloat(document.getElementById("token2Amount").value);
-
-			const tickSpacing = 60;
-			const lowerTick = Math.floor(Math.log(token1Price / token2Price) / Math.log(1.0001) / tickSpacing) * tickSpacing;
-			const upperTick = lowerTick + tickSpacing;
-
-			const sqrtPrice = Math.sqrt(token1Price / token2Price);
-			const liquidity = Math.sqrt(token1Amount * token2Amount);
-
-			const tickRange = upperTick - lowerTick;
-			const priceRange = sqrtPrice ** 2 - (1 / sqrtPrice) ** 2;
-
-			const impermanentLoss = (4 * (tickRange ** 2)) / (priceRange * liquidity * 10000 + 4 * (tickRange ** 2));
-
-			document.getElementById("result").innerHTML = "Impermanent Loss: " + (impermanentLoss * 100).toFixed(2) + "%";
-		}
-	</script>
+  <h1>Uniswap V3 Impermanent Loss Calculator</h1>
+  <form id="calculator">
+    <label for="initialPrice">Initial Price (Token B / Token A):</label>
+    <input type="number" id="initialPrice" step="0.0001" required>
+    <br>
+    <label for="currentPrice">Current Price (Token B / Token A):</label>
+    <input type="number" id="currentPrice" step="0.0001" required>
+    <br>
+    <label for="tickLower">Tick Lower:</label>
+    <input type="number" id="tickLower" required>
+    <br>
+    <label for="tickUpper">Tick Upper:</label>
+    <input type="number" id="tickUpper" required>
+    <br>
+    <button type="submit">Calculate Impermanent Loss</button>
+  </form>
+  <div id="result">
+    <!-- The result will be displayed here -->
+  </div>
+  <script>
+    // Add your JavaScript code here
+  </script>
 </body>
 </html>
-
 
