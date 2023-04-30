@@ -1,36 +1,46 @@
-$(document).ready(function() {
+const API_ENDPOINT = "https://api.coingecko.com/api/v3";
 
-	var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+// Function to get the top 500 cryptocurrencies from the API
+async function getTop500Cryptocurrencies() {
+  const response = await fetch(`${API_ENDPOINT}/coins/markets?vs_currency=usd&per_page=500`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
 
-	function getCryptocurrencies() {
-		$.getJSON(apiUrl, function(data) {
-			var cryptocurrencies = data;
+// Function to update the price and percentage change for a specific cryptocurrency
+function updateCryptocurrencyPrice(cryptocurrency, row) {
+  // Get the price and percentage change from the API
+  const price = cryptocurrency.current_price;
+  const hourChange = cryptocurrency.price_change_percentage_1h_in_currency;
+  const dayChange = cryptocurrency.price_change_percentage_24h_in_currency;
+  const weekChange = cryptocurrency.price_change_percentage_7d_in_currency;
 
-			$.each(cryptocurrencies, function(index, cryptocurrency) {
-				var rank = cryptocurrency.market_cap_rank;
-				var name = cryptocurrency.name;
-				var symbol = cryptocurrency.symbol.toUpperCase();
-				var price = cryptocurrency.current_price.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-				var marketCap = cryptocurrency.market_cap.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-				var change24h = cryptocurrency.price_change_percentage_24h.toFixed(2);
-				var changeClass = change24h >= 0 ? "green" : "red";
-				var logo = "<img src='" + cryptocurrency.image + "' width='20' height='20'>";
+  // Update the price and percentage change in the table row
+  $(row).find(".price").text(`$${price.toLocaleString()}`);
+  $(row).find(".hour-change").text(`${hourChange.toFixed(2)}%`);
+  $(row).find(".day-change").text(`${dayChange.toFixed(2)}%`);
+  $(row).find(".week-change").text(`${weekChange.toFixed(2)}%`);
 
-				var cryptocurrencyRow = "<tr>";
-				cryptocurrencyRow += "<td>" + rank + "</td>";
-				cryptocurrencyRow += "<td>" + name + "</td>";
-				cryptocurrencyRow += "<td>" + symbol + "</td>";
-				cryptocurrencyRow += "<td>" + price + "</td>";
-				cryptocurrencyRow += "<td>" + marketCap + "</td>";
-				cryptocurrencyRow += "<td class=\"" + changeClass + "\">" + change24h + "</td>";
-				cryptocurrencyRow += "<td>" + logo + "</td>";
-				cryptocurrencyRow += "</tr>";
+  // Update the color of the percentage change based on its value
+  if (hourChange < 0) {
+    $(row).find(".hour-change").addClass("negative");
+  } else {
+    $(row).find(".hour-change").removeClass("negative");
+  }
+  if (dayChange < 0) {
+    $(row).find(".day-change").addClass("negative");
+  } else {
+    $(row).find(".day-change").removeClass("negative");
+  }
+  if (weekChange < 0) {
+    $(row).find(".week-change").addClass("negative");
+  } else {
+    $(row).find(".week-change").removeClass("negative");
+  }
+}
 
-				$("#cryptocurrencies-table").append(cryptocurrencyRow);
-			});
-		});
-	}
-
-	getCryptocurrencies();
-
-});
+// Function to update the prices and percentage changes for all cryptocurrencies
+async function updateCryptocurrencyPrices() {
+  const cryptocurrencies = await getTop500
