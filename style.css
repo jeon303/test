@@ -49,8 +49,7 @@ tr:hover {
 td:nth-child(1),
 td:nth-child(3),
 td:nth-child(4),
-td:nth-child(5),
-td:nth-child(6) {
+td:nth-child(5) {
   text-align: right;
 }
 
@@ -83,3 +82,4 @@ td.symbol img {
   height: 16px;
   margin-right: 5px;
 }
+
