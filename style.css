@@ -1,0 +1,14 @@
+body {
+	background-color: #f2f2f2;
+}
+
+#price-container {
+	margin-top: 150px;
+	text-align: center;
+	color: #333333;
+}
+
+#price {
+	font-size: 80px;
+	font-weight: bold;
+}
