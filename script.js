@@ -1,14 +1,14 @@
-const apiKey = 'YOUR_API_KEY_HERE';
-const searchEngineId = 'YOUR_SEARCH_ENGINE_ID_HERE';
-const query = 'motivational quotes';
-const imgType = 'photo';
-const imgSize = 'large';
-const imgColorType = 'color';
-const intervalTime = 10000;
+$(document).ready(function() {
 
-const quoteElement = document.querySelector('.quote');
-const backgroundElement = document.querySelector('.background-image');
+	var apiUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
 
-function getSearchResults() {
-  return fetch(`https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${searchEngineId}&q=${query}&imgType=${imgType}&imgSize=${imgSize}&imgColorType=${imgColorType}`)
-    .then(response => response.json
+	function getBitcoinPrice() {
+		$.getJSON(apiUrl, function(data) {
+			var bitcoinPrice = data["bitcoin"]["usd"].toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+			$("#price").text(bitcoinPrice);
+		});
+	}
+
+	getBitcoinPrice();
+
+});
