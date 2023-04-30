@@ -1,33 +1,38 @@
-function fetchData() {
-    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=500&page=1&sparkline=false")
-        .then(response => response.json())
-        .then(data => {
-            displayData(data);
-            setTimeout(fetchData, 15000);
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-            setTimeout(fetchData, 15000);
-        });
+function calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper) {
+  const X96 = BigInt(2) ** BigInt(96);
+  const sqrtPriceLower = BigInt(Math.round((1 / tickLower) * X96));
+  const sqrtPriceUpper = BigInt(Math.round((1 / tickUpper) * X96));
+  const sqrtPriceCurrent = BigInt(Math.round(initialPrice * currentPrice * X96));
+
+  const lowerThreshold = sqrtPriceCurrent >= sqrtPriceLower;
+  const upperThreshold = sqrtPriceCurrent <= sqrtPriceUpper;
+
+  if (lowerThreshold && upperThreshold) {
+    return 0; // No impermanent loss
+  }
+
+  const amount0 = Number(sqrtPriceUpper - sqrtPriceLower) / X96;
+  const amount1 = Number((sqrtPriceLower * sqrtPriceUpper) / X96);
+
+  const liquidityRatio = lowerThreshold ? amount1 / (currentPrice * amount0) : amount0 / (amount1 * currentPrice);
+  const impermanentLoss = 1 - liquidityRatio;
+
+  return impermanentLoss;
 }
 
-function displayData(data) {
-    const tableBody = document.getElementById("crypto-table-body");
-    tableBody.innerHTML = "";
+const calculatorForm = document.getElementById("calculator");
+const resultDiv = document.getElementById("result");
 
-    data.forEach((crypto, index) => {
-        const row = document.createElement("tr");
+calculatorForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${crypto.name}<img src="${crypto.image}" alt="${crypto.name}" width="20" height="20"></td>
-            <td>${crypto.symbol.toUpperCase()}</td>
-            <td>$${crypto.current_price.toFixed(2)}</td>
-            <td>${crypto.price_change_percentage_1h_in_currency.toFixed(2)}%</td>
-            <td>${crypto.price_change_percentage_24h_in_currency.toFixed(2)}%</td>
-            <td>${crypto.price_change_percentage_7d_in_currency.toFixed(2)}%</td>
-            <td>$${crypto.market_cap.toLocaleString()}</td>
-            <td>$${crypto.fully_diluted_valuation.toLocaleString()}</td>
-            <td>${crypto.circulating_supply.toLocaleString()}</td>
-       
+  const initialPrice = parseFloat(document.getElementById("initialPrice").value);
+  const currentPrice = parseFloat(document.getElementById("currentPrice").value);
+  const tickLower = parseFloat(document.getElementById("tickLower").value);
+  const tickUpper = parseFloat(document.getElementById("tickUpper").value);
+
+  const impermanentLoss = calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper);
+
+  resultDiv.innerHTML = `Impermanent Loss: ${(im
+
 
