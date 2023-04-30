@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Bitcoin Price</title>
+	<title>Top 100 Cryptocurrencies</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="script.js"></script>
 </head>
 <body>
-	<div id="price-container">
-		<h1 id="price"></h1>
+	<div id="cryptocurrencies-container">
+		<table>
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Name</th>
+					<th>Symbol</th>
+					<th>Price (USD)</th>
+					<th>Market Cap (USD)</th>
+					<th>24h Change (%)</th>
+				</tr>
+			</thead>
+			<tbody id="cryptocurrencies-table">
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>
