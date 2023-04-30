@@ -11,11 +11,17 @@
 <body>
   <h1>Uniswap V3 Impermanent Loss Calculator</h1>
   <form id="calculator">
-    <label for="initialPrice">Initial Price (Token B / Token A):</label>
-    <input type="number" id="initialPrice" step="0.0001" required>
+    <label for="initialPriceA">Initial Price (Token A):</label>
+    <input type="number" id="initialPriceA" step="0.0001" required>
     <br>
-    <label for="currentPrice">Current Price (Token B / Token A):</label>
-    <input type="number" id="currentPrice" step="0.0001" required>
+    <label for="initialPriceB">Initial Price (Token B):</label>
+    <input type="number" id="initialPriceB" step="0.0001" required>
+    <br>
+    <label for="currentPriceA">Current Price (Token A):</label>
+    <input type="number" id="currentPriceA" step="0.0001" required>
+    <br>
+    <label for="currentPriceB">Current Price (Token B):</label>
+    <input type="number" id="currentPriceB" step="0.0001" required>
     <br>
     <label for="tickLower">Tick Lower:</label>
     <input type="number" id="tickLower" required>
@@ -30,43 +36,38 @@
   </div>
   <script>
     function calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper) {
-  const X96 = BigInt(2) ** BigInt(96);
-  const sqrtPriceLower = BigInt(Math.round((1 / tickLower) * X96));
-  const sqrtPriceUpper = BigInt(Math.round((1 / tickUpper) * X96));
-  const sqrtPriceCurrent = BigInt(Math.round(initialPrice * currentPrice * X96));
+      const X96 = BigInt(2) ** BigInt(96);
+      const sqrtPriceLower = BigInt(Math.round((1 / tickLower) * X96));
+      const sqrtPriceUpper = BigInt(Math.round((1 / tickUpper) * X96));
+      const sqrtPriceCurrent = BigInt(Math.round(initialPrice * currentPrice * X96));
 
-  const lowerThreshold = sqrtPriceCurrent >= sqrtPriceLower;
-  const upperThreshold = sqrtPriceCurrent <= sqrtPriceUpper;
+      const lowerThreshold = sqrtPriceCurrent >= sqrtPriceLower;
+      const upperThreshold = sqrtPriceCurrent <= sqrtPriceUpper;
 
-  if (lowerThreshold && upperThreshold) {
-    return 0; // No impermanent loss
-  }
+      if (lowerThreshold && upperThreshold) {
+        return 0; // No impermanent loss
+      }
 
-  const amount0 = Number(sqrtPriceUpper - sqrtPriceLower) / X96;
-  const amount1 = Number((sqrtPriceLower * sqrtPriceUpper) / X96);
+      const amount0 = Number(sqrtPriceUpper - sqrtPriceLower) / X96;
+      const amount1 = Number((sqrtPriceLower * sqrtPriceUpper) / X96);
 
-  const liquidityRatio = lowerThreshold ? amount1 / (currentPrice * amount0) : amount0 / (amount1 * currentPrice);
-  const impermanentLoss = 1 - liquidityRatio;
+      const liquidityRatio = lowerThreshold ? amount1 / (currentPrice * amount0) : amount0 / (amount1 * currentPrice);
+      const impermanentLoss = 1 - liquidityRatio;
 
-  return impermanentLoss;
-}
+      return impermanentLoss;
+    }
 
-const calculatorForm = document.getElementById("calculator");
-const resultDiv = document.getElementById("result");
+    const calculatorForm = document.getElementById("calculator");
+    const resultDiv = document.getElementById("result");
 
-calculatorForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+    calculatorForm.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-  const initialPrice = parseFloat(document.getElementById("initialPrice").value);
-  const currentPrice = parseFloat(document.getElementById("currentPrice").value);
-  const tickLower = parseFloat(document.getElementById("tickLower").value);
-  const tickUpper = parseFloat(document.getElementById("tickUpper").value);
+      const initialPriceA = parseFloat(document.getElementById("initialPriceA").value);
+      const initialPriceB = parseFloat(document.getElementById("initialPriceB").value);
+      const currentPriceA = parseFloat(document.getElementById("currentPriceA").value);
+      const currentPriceB = parseFloat(document.getElementById("currentPriceB").value);
+      const tickLower = parseFloat(document.getElementById("tickLower").value);
+      const tickUpper = parseFloat(document.getElementById
 
-  const impermanentLoss = calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper);
-
-  resultDiv.innerHTML = `Impermanent Loss: ${(im
-
-  </script>
-</body>
-</html>
 
