@@ -14,6 +14,7 @@ $(document).ready(function() {
 				var marketCap = cryptocurrency.market_cap.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 				var change24h = cryptocurrency.price_change_percentage_24h.toFixed(2);
 				var changeClass = change24h >= 0 ? "green" : "red";
+				var logo = "<img src='" + cryptocurrency.image + "' width='20' height='20'>";
 
 				var cryptocurrencyRow = "<tr>";
 				cryptocurrencyRow += "<td>" + rank + "</td>";
@@ -22,6 +23,7 @@ $(document).ready(function() {
 				cryptocurrencyRow += "<td>" + price + "</td>";
 				cryptocurrencyRow += "<td>" + marketCap + "</td>";
 				cryptocurrencyRow += "<td class=\"" + changeClass + "\">" + change24h + "</td>";
+				cryptocurrencyRow += "<td>" + logo + "</td>";
 				cryptocurrencyRow += "</tr>";
 
 				$("#cryptocurrencies-table").append(cryptocurrencyRow);
