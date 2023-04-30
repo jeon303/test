@@ -35,25 +35,26 @@
     <!-- The result will be displayed here -->
   </div>
   <script>
-    function calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper) {
-      const X96 = BigInt(2) ** BigInt(96);
-      const sqrtPriceLower = BigInt(Math.round((1 / tickLower) * X96));
-      const sqrtPriceUpper = BigInt(Math.round((1 / tickUpper) * X96));
-      const sqrtPriceCurrent = BigInt(Math.round(initialPrice * currentPrice * X96));
+    function calculateImpermanentLoss(initialPriceA, initialPriceB, currentPriceA, currentPriceB, tickLower, tickUpper) {
+      const initialPriceRatio = initialPriceA / initialPriceB;
+      const currentPriceRatio = currentPriceA / currentPriceB;
 
-      const lowerThreshold = sqrtPriceCurrent >= sqrtPriceLower;
-      const upperThreshold = sqrtPriceCurrent <= sqrtPriceUpper;
+      const priceChangeRatio = currentPriceRatio / initialPriceRatio;
+      const tickLowerRatio = tickLower / initialPriceRatio;
+      const tickUpperRatio = tickUpper / initialPriceRatio;
 
-      if (lowerThreshold && upperThreshold) {
+      if (priceChangeRatio >= tickLowerRatio && priceChangeRatio <= tickUpperRatio) {
         return 0; // No impermanent loss
       }
 
-      const amount0 = Number(sqrtPriceUpper - sqrtPriceLower) / X96;
-      const amount1 = Number((sqrtPriceLower * sqrtPriceUpper) / X96);
+      let outsidePriceRatio;
+      if (priceChangeRatio < tickLowerRatio) {
+        outsidePriceRatio = tickLowerRatio;
+      } else {
+        outsidePriceRatio = tickUpperRatio;
+      }
 
-      const liquidityRatio = lowerThreshold ? amount1 / (currentPrice * amount0) : amount0 / (amount1 * currentPrice);
-      const impermanentLoss = 1 - liquidityRatio;
-
+      const impermanentLoss = 1 - (priceChangeRatio / outsidePriceRatio);
       return impermanentLoss;
     }
 
@@ -68,6 +69,6 @@
       const currentPriceA = parseFloat(document.getElementById("currentPriceA").value);
       const currentPriceB = parseFloat(document.getElementById("currentPriceB").value);
       const tickLower = parseFloat(document.getElementById("tickLower").value);
-     
+      const
 
 
