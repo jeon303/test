@@ -1,32 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Top 500 Cryptocurrencies</title>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 500 Cryptocurrencies</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<div id="cryptocurrencies-container">
-		<table>
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th>Price</th>
-					<th>1h Change</th>
-					<th>24h Change</th>
-					<th>7d Change</th>
-					<th>Market Cap</th>
-					<th>Fully Diluted Valuation</th>
-					<th>Circulating Supply</th>
-					<th>Chart</th>
-				</tr>
-			</thead>
-			<tbody id="cryptocurrencies-table">
-			</tbody>
-		</table>
-	</div>
+    <div class="container">
+        <h1 class="text-center my-4">Top 500 Cryptocurrencies</h1>
+        <table id="crypto-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>1h</th>
+                    <th>24h</th>
+                    <th>7d</th>
+                    <th>Market Cap</th>
+                    <th>Fully Diluted Valuation</th>
+                    <th>Circulating Supply</th>
+                </tr>
+            </thead>
+            <tbody id="crypto-table-body">
+            </tbody>
+        </table>
+    </div>
+    <script src="scripts.js"></script>
 </body>
 </html>
