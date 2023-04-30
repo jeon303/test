@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Fact Generator</title>
-    <link rel="stylesheet" href="styles.css">
+	<title>Uniswap v3 Impermanent Loss Calculator</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container">
-        <h1>Random Fact Generator</h1>
-        <p id="fact-display"></p>
-        <button id="fact-button">Get a Random Fact</button>
-    </div>
-    <script src="script.js"></script>
+	<h1>Uniswap v3 Impermanent Loss Calculator</h1>
+	<form>
+		<label for="token1Price">Token 1 Price:</label>
+		<input type="number" id="token1Price" name="token1Price" step="0.0001" min="0.0001" required>
+		<br>
+		<label for="token2Price">Token 2 Price:</label>
+		<input type="number" id="token2Price" name="token2Price" step="0.0001" min="0.0001" required>
+		<br>
+		<label for="token1Amount">Token 1 Amount:</label>
+		<input type="number" id="token1Amount" name="token1Amount" step="0.0001" min="0.0001" required>
+		<br>
+		<label for="token2Amount">Token 2 Amount:</label>
+		<input type="number" id="token2Amount" name="token2Amount" step="0.0001" min="0.0001" required>
+		<br>
+		<button type="button" onclick="calculateImpermanentLoss()">Calculate</button>
+	</form>
+	<p id="result"></p>
+	<script>
+		function calculateImpermanentLoss() {
+			const token1Price = parseFloat(document.getElementById("token1Price").value);
+			const token2Price = parseFloat(document.getElementById("token2Price").value);
+			const token1Amount = parseFloat(document.getElementById("token1Amount").value);
+			const token2Amount = parseFloat(document.getElementById("token2Amount").value);
+
+			const priceRatio = token1Price / token2Price;
+			const balanceRatio = token1Amount / token2Amount;
+
+			const impermanentLoss = 1 - Math.sqrt(priceRatio * balanceRatio);
+
+			document.getElementById("result").innerHTML = "Impermanent Loss: " + (impermanentLoss * 100).toFixed(2) + "%";
+		}
+	</script>
 </body>
 </html>
-
