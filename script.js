@@ -1,38 +1,29 @@
-function calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper) {
-  const X96 = BigInt(2) ** BigInt(96);
-  const sqrtPriceLower = BigInt(Math.round((1 / tickLower) * X96));
-  const sqrtPriceUpper = BigInt(Math.round((1 / tickUpper) * X96));
-  const sqrtPriceCurrent = BigInt(Math.round(initialPrice * currentPrice * X96));
-
-  const lowerThreshold = sqrtPriceCurrent >= sqrtPriceLower;
-  const upperThreshold = sqrtPriceCurrent <= sqrtPriceUpper;
-
-  if (lowerThreshold && upperThreshold) {
-    return 0; // No impermanent loss
-  }
-
-  const amount0 = Number(sqrtPriceUpper - sqrtPriceLower) / X96;
-  const amount1 = Number((sqrtPriceLower * sqrtPriceUpper) / X96);
-
-  const liquidityRatio = lowerThreshold ? amount1 / (currentPrice * amount0) : amount0 / (amount1 * currentPrice);
-  const impermanentLoss = 1 - liquidityRatio;
-
-  return impermanentLoss;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-const calculatorForm = document.getElementById("calculator");
-const resultDiv = document.getElementById("result");
+.game-container {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    background-color: lightblue;
+    margin: 0 auto;
+    overflow: hidden;
+}
 
-calculatorForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+.paddle {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background-color: darkblue;
+    bottom: 20px;
+}
 
-  const initialPrice = parseFloat(document.getElementById("initialPrice").value);
-  const currentPrice = parseFloat(document.getElementById("currentPrice").value);
-  const tickLower = parseFloat(document.getElementById("tickLower").value);
-  const tickUpper = parseFloat(document.getElementById("tickUpper").value);
-
-  const impermanentLoss = calculateImpermanentLoss(initialPrice, currentPrice, tickLower, tickUpper);
-
-  resultDiv.innerHTML = `Impermanent Loss: ${(im
-
-
+.object {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: orange;
+}
