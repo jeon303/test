@@ -1,29 +1,51 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+const gameContainer = document.getElementById('gameContainer');
+const paddle = document.getElementById('paddle');
+const object = document.getElementById('object');
+
+let paddlePosition = gameContainer.clientWidth / 2 - paddle.clientWidth / 2;
+let objectPosition = 0;
+let objectSpeed = 2;
+
+paddle.style.left = `${paddlePosition}px`;
+object.style.top = `${objectPosition}px`;
+
+function movePaddle(event) {
+    if (event.key === "ArrowLeft") {
+        paddlePosition = Math.max(paddlePosition - 5, 0);
+    } else if (event.key === "ArrowRight") {
+        paddlePosition = Math.min(paddlePosition + 5, gameContainer.clientWidth - paddle.clientWidth);
+    }
+    paddle.style.left = `${paddlePosition}px`;
 }
 
-.game-container {
-    position: relative;
-    width: 640px;
-    height: 480px;
-    background-color: lightblue;
-    margin: 0 auto;
-    overflow: hidden;
+function moveObject() {
+    objectPosition += objectSpeed;
+    object.style.top = `${objectPosition}px`;
+
+    if (objectPosition + object.clientHeight > gameContainer.clientHeight) {
+        objectPosition = 0;
+        object.style.left = `${Math.random() * (gameContainer.clientWidth - object.clientWidth)}px`;
+    }
+
+    if (collisionCheck()) {
+        objectPosition = 0;
+        object.style.left = `${Math.random() * (gameContainer.clientWidth - object.clientWidth)}px`;
+    }
+
+    requestAnimationFrame(moveObject);
 }
 
-.paddle {
-    position: absolute;
-    width: 100px;
-    height: 20px;
-    background-color: darkblue;
-    bottom: 20px;
+function collisionCheck() {
+    const paddleRect = paddle.getBoundingClientRect();
+    const objectRect = object.getBoundingClientRect();
+
+    return (
+        objectRect.left < paddleRect.left + paddleRect.width &&
+        objectRect.left + objectRect.width > paddleRect.left &&
+        objectRect.top < paddleRect.top + paddleRect.height &&
+        objectRect.height + objectRect.top > paddleRect.top
+    );
 }
 
-.object {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: orange;
-}
+document.addEventListener('keydown', movePaddle);
+moveObject();
